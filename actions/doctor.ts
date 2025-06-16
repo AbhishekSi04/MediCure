@@ -166,3 +166,6 @@ export async function getDoctorAppointments() {
       throw new Error("Failed to fetch appointments " + error.message);
     }
   }
+
+
+  
