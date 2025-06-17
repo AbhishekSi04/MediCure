@@ -5,6 +5,7 @@ import { addDays, addMinutes, endOfDay, format } from "date-fns";
 import { getCurrentUser } from "./onboarding";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { error } from "console";
 
 interface TimeSlot {
   startTime: string;
@@ -311,7 +312,12 @@ export async function createAppointment(data: CreateAppointmentData) {
       throw new Error("Only patients can book appointments");
     }
 
-    // Step 2: Validate doctor exists
+    // Step 2: Check for minimum credits
+    if (user.credits < 2) {
+      throw new Error("Not enough credits. Please buy a subscription.");
+    }
+
+    // Step 3: Validate doctor exists
     const doctor = await db.user.findUnique({
       where: {
         id: data.doctorId,
@@ -324,7 +330,7 @@ export async function createAppointment(data: CreateAppointmentData) {
       throw new Error("Doctor not found or not verified");
     }
 
-    // Step 3: Check for overlapping appointments
+    // Step 4: Check for overlapping appointments
     const startTime = new Date(data.startTime);
     const endTime = new Date(data.endTime);
 
@@ -333,7 +339,6 @@ export async function createAppointment(data: CreateAppointmentData) {
         doctorId: data.doctorId,
         status: "SCHEDULED",
         OR: [
-          // Check if new appointment overlaps with existing ones
           {
             AND: [
               { startTime: { lte: startTime } },
@@ -354,37 +359,193 @@ export async function createAppointment(data: CreateAppointmentData) {
       throw new Error("This time slot is no longer available");
     }
 
-    // Step 4: Create the appointment
-    const appointment = await db.appointment.create({
-      data: {
-        patientId: user.id,
-        doctorId: data.doctorId,
-        startTime: startTime,
-        endTime: endTime,
-        status: "SCHEDULED",
-        patientDescription: data.description,
-        notes: data.notes,
-      },
-      include: {
-        doctor: {
-          select: {
-            name: true,
-            email: true,
+    // Step 5: Create the appointment and deduct credits in a transaction
+    const appointment = await db.$transaction(async (tx) => {
+      const newAppointment = await tx.appointment.create({
+        data: {
+          patientId: user.id,
+          doctorId: data.doctorId,
+          startTime: startTime,
+          endTime: endTime,
+          status: "SCHEDULED",
+          patientDescription: data.description,
+          notes: data.notes,
+        },
+        include: {
+          doctor: {
+            select: {
+              name: true,
+              email: true,
+            },
+          },
+          patient: {
+            select: {
+              name: true,
+              email: true,
+            },
           },
         },
-        patient: {
-          select: {
-            name: true,
-            email: true,
+      });
+
+      // Deduct 2 credits from the user
+      await tx.user.update({
+        where: { id: user.id },
+        data: {
+          credits: {
+            decrement: 2,
           },
         },
-      },
+      });
+      
+      // increment credits in the doctor
+      await tx.user.update({
+        where: { id: doctor.id },
+        data: {
+          credits: {
+            increment: 2,
+          },
+        },
+      });
+
+      return newAppointment;
     });
 
     revalidatePath("/appointments");
     return { appointment };
+
   } catch (error: any) {
     console.error("Error creating appointment:", error);
     throw new Error(error.message || "Failed to create appointment");
   }
 }
+
+/**
+ * Complete an appointment
+ */
+export async function completeAppointment(appointmentId: string) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const appointment = await db.appointment.findUnique({
+      where: { id: appointmentId },
+      include: {
+        doctor: true,
+        patient: true,
+      },
+    });
+
+    if (!appointment) {
+      throw new Error("Appointment not found");
+    }
+
+    const doctor = await db.user.findFirst({
+      where: {
+        id: appointment.doctorId,
+        clerkUserId: userId,
+      },
+    });
+
+    if (!doctor) {
+      throw new Error("Only the doctor can complete the appointment");
+    }
+
+    const now = new Date();
+    if (now < appointment.endTime) {
+      throw new Error("You can only complete the appointment after it ends");
+    }
+
+    await db.appointment.update({
+      where: { id: appointmentId },
+      data: { status: "COMPLETED" },
+    });
+
+    revalidatePath("/appointments");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Error completing appointment:", error);
+    throw new Error("Failed to complete appointment: " + error.message);
+  }
+}
+
+
+/**
+ * Cancel an appointment
+ */
+export async function cancelAppointment(appointmentId: string) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const appointment = await db.appointment.findUnique({
+      where: { id: appointmentId },
+      include: {
+        doctor: true,
+        patient: true,
+      },
+    });
+
+    if (!appointment) {
+      throw new Error("Appointment not found");
+    }
+
+    const currentUser = await db.user.findFirst({
+      where: {
+        clerkUserId: userId,
+      },
+    });
+
+    if (!currentUser) {
+      throw new Error("Unauthorized to modify this appointment");
+    }
+
+    const isDoctor = currentUser.id === appointment.doctorId;
+    const isPatient = currentUser.id === appointment.patientId;
+
+    if (!isDoctor && !isPatient) {
+      throw new Error("You are not authorized to cancel this appointment");
+    }
+
+    await db.$transaction(async (tx) => {
+      // 1. Cancel the appointment
+      await tx.appointment.update({
+        where: { id: appointmentId },
+        data: { status: "CANCELLED" },
+      });
+
+      // 2. Update credits
+      if (isPatient) {
+        await tx.user.update({
+          where: { id: currentUser.id },
+          data: {
+            credits: {
+              increment: 2, // refund
+            },
+          },
+        });
+      } else if (isDoctor) {
+        await tx.user.update({
+          where: { id: currentUser.id },
+          data: {
+            credits: {
+              decrement: 2, // penalty
+            },
+          },
+        });
+      }
+    });
+
+    revalidatePath("/appointments");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Error cancelling appointment:", error);
+    throw new Error("Failed to cancel appointment: " + error.message);
+  }
+}
+

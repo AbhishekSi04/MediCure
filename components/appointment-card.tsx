@@ -4,6 +4,9 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Clock, User, Video } from "lucide-react"
 import { format } from "date-fns"
+import { Button } from "@/components/ui/button"
+import { completeAppointment, cancelAppointment } from "@/actions/appointments"
+import { toast } from "sonner"
 
 interface AppointmentCardProps {
   appointment: {
@@ -24,7 +27,7 @@ interface AppointmentCardProps {
   refetchAppointments?: () => void
 }
 
-export default function AppointmentCard({ appointment, userRole }: AppointmentCardProps) {
+export default function AppointmentCard({ appointment, userRole, refetchAppointments }: AppointmentCardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "SCHEDULED":
@@ -35,6 +38,26 @@ export default function AppointmentCard({ appointment, userRole }: AppointmentCa
         return "bg-red-500"
       default:
         return "bg-gray-500"
+    }
+  }
+
+  const handleComplete = async () => {
+    try {
+      await completeAppointment(appointment.id)
+      toast.success("Appointment marked as completed")
+      refetchAppointments?.()
+    } catch (error) {
+      toast.error("Failed to complete appointment")
+    }
+  }
+
+  const handleCancel = async () => {
+    try {
+      await cancelAppointment(appointment.id)
+      toast.success("Appointment cancelled")
+      refetchAppointments?.()
+    } catch (error) {
+      toast.error("Failed to cancel appointment")
     }
   }
 
@@ -84,6 +107,25 @@ export default function AppointmentCard({ appointment, userRole }: AppointmentCa
           <div className="text-sm text-muted-foreground">
             <p className="font-medium">Patient Description:</p>
             <p>{appointment.patientDescription}</p>
+          </div>
+        )}
+
+        {appointment.status === "SCHEDULED" && (
+          <div className="flex gap-2 mt-2">
+            {userRole=="DOCTOR"  && <Button 
+              onClick={handleComplete}
+              variant="outline" 
+              className="flex-1 bg-green-500 hover:bg-green-600 text-white"
+            >
+              Complete
+            </Button>}
+            <Button 
+              onClick={handleCancel}
+              variant="outline" 
+              className="flex-1 bg-red-500 hover:bg-red-600 text-white"
+            >
+              Cancel
+            </Button>
           </div>
         )}
       </div>

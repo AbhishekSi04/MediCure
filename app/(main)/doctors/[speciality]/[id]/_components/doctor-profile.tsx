@@ -76,7 +76,8 @@ export default function DoctorProfile({ doctor, availableDays }: DoctorProfilePr
     } catch (error: any) {
       toast.error(error.message || "Failed to book appointment")
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
+      setIsDialogOpen(false);
     }
   }
 
