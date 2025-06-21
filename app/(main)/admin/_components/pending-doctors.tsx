@@ -25,6 +25,7 @@ import { updateDoctorStatus } from "@/actions/admin";
 import useFetch from "@/hooks/use-fetch";
 import { useEffect } from "react";
 import { BarLoader } from "react-spinners";
+import { redirect, useRouter } from "next/navigation";
 
 // Define the Doctor type
 type Doctor = {
@@ -46,8 +47,9 @@ type PendingDoctorsProps = {
 
 export function PendingDoctors({ doctors }: PendingDoctorsProps) {
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const router = useRouter();
 
-  console.log("doctors are:",doctors);
+  // console.log("doctors are:",doctors);
 
   const {
     loading,
@@ -74,11 +76,13 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
     formData.append("status", status);
 
     await submitStatusUpdate(formData);
+    router.refresh();
   };
 
   useEffect(() => {
     if (data?.success) {
       handleCloseDialog();
+      // router.refresh();
     }
   }, [data]);
 

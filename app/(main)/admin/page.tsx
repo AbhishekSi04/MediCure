@@ -4,13 +4,15 @@ import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PendingDoctors } from "./_components/pending-doctors";
 import { VerifiedDoctors } from "./_components/verified-doctors";
-import { getPendingDoctors, getVerifiedDoctors, AdminResponse } from "@/actions/admin";
+import { getPendingDoctors, getVerifiedDoctors, AdminResponse, getPendingPayouts } from "@/actions/admin";
 import useFetch from "@/hooks/use-fetch";
 import { BarLoader } from "react-spinners";
 import { toast } from "sonner";
+import { PendingPayouts } from "./_components/pending-payouts";
+// import { TabContext } from "./layout";
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState("pending");
+  // const [activeTab, setActiveTab] = useState<"pending" | "verified" | "payouts">("pending");
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const {
@@ -27,15 +29,30 @@ export default function AdminPage() {
     fn: fetchVerifiedDoctors,
   } = useFetch<AdminResponse>(getVerifiedDoctors);
 
+  const {
+    loading: payoutLoading,
+    data: payoutData,
+    error: payoutError,
+    fn: fetchPendingPayouts,
+  } = useFetch<AdminResponse>(getPendingPayouts);
+
+  // console.log("payout data is ",payoutData);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (activeTab === "pending") {
-            console.log("pending data is ",pendingData);
-          await fetchPendingDoctors(new FormData());
-        } else {
-          await fetchVerifiedDoctors(new FormData());
-        }
+        fetchPendingDoctors(new FormData());
+        fetchVerifiedDoctors(new FormData());
+        fetchPendingPayouts(new FormData());
+        // if (activeTab === "pending") {
+        //     // console.log("pending data is ",pendingData);
+        //   await fetchPendingDoctors(new FormData());
+        // } else if(activeTab === "verified") {
+        //   await fetchVerifiedDoctors(new FormData());
+        // }
+        // else{
+        //   await fetchPendingPayouts(new FormData());
+        // }
       } catch (error) {
         toast.error("Failed to fetch doctors data");
       } finally {
@@ -44,7 +61,7 @@ export default function AdminPage() {
     };
 
     fetchData();
-  }, [activeTab]);
+  }, []);
 
   // Show error messages if any
   useEffect(() => {
@@ -54,41 +71,55 @@ export default function AdminPage() {
     if (verifiedError) {
       toast.error(verifiedError.message);
     }
-  }, [pendingError, verifiedError]);
+    if (payoutError) {
+      toast.error(payoutError.message);
+    }
+  }, [pendingError, verifiedError,payoutError]);
 
   return (
     <div className="container mx-auto py-8">
-      <Tabs
+      {/* <Tabs
         defaultValue="pending"
         value={activeTab}
         onValueChange={setActiveTab}
         className="space-y-6"
-      >
-        <TabsList className="grid w-full grid-cols-2">
+      > */}
+        {/* <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="pending">Pending Doctors</TabsTrigger>
           <TabsTrigger value="verified">Verified Doctors</TabsTrigger>
-        </TabsList>
+        </TabsList> */}
 
         <TabsContent value="pending" className="space-y-4">
-          {isInitialLoad || pendingLoading ? (
-            <div className="flex justify-center py-8">
-              <BarLoader width={"100%"} color="#36d7b7" />
-            </div>
-          ) : (
-            <PendingDoctors doctors={pendingData?.doctors || []} />
-          )}
+            {(isInitialLoad || pendingLoading) ? (
+              
+              <div className="flex justify-center py-8">
+                <BarLoader width={"100%"} color="#36d7b7" />
+              </div>
+            ) : (
+              <PendingDoctors doctors={pendingData?.doctors || []} />
+            )}
         </TabsContent>
 
         <TabsContent value="verified" className="space-y-4">
-          {isInitialLoad || verifiedLoading ? (
+            {isInitialLoad || verifiedLoading ? (
+              <div className="flex justify-center py-8">
+                <BarLoader width={"100%"} color="#36d7b7" />
+              </div>
+            ) : (
+              <VerifiedDoctors doctors={verifiedData?.doctors || []} />
+            )}
+        </TabsContent>
+
+        <TabsContent  value="payouts" className="space-y-4">
+          {isInitialLoad || payoutLoading ? (
             <div className="flex justify-center py-8">
               <BarLoader width={"100%"} color="#36d7b7" />
             </div>
           ) : (
-            <VerifiedDoctors doctors={verifiedData?.doctors || []} />
+            <PendingPayouts payouts={payoutData?.payouts || []} />
           )}
         </TabsContent>
-      </Tabs>
+      {/* </Tabs> */}
     </div>
   );
 }
