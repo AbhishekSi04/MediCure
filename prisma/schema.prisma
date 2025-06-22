@@ -40,6 +40,7 @@ model User {
   availabilities      Availability[]
   transactions        CreditTransaction[]
   payouts             Payout[]
+  chatMessages        ChatMessage[]
 }
 
 enum UserRole {
@@ -47,6 +48,15 @@ enum UserRole {
   PATIENT
   DOCTOR
   ADMIN
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  role      String   // 'user' or 'assistant'
+  content   String
+  timestamp DateTime @default(now())
 }
 
 enum VerificationStatus {

@@ -5,15 +5,17 @@ import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton, useUser } 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { ShieldCheck, Stethoscope, Calendar, User as UserIcon, CreditCard } from "lucide-react";
+import { ShieldCheck, Stethoscope, Calendar, User as UserIcon, CreditCard, MessageCircle } from "lucide-react";
 import { User } from "@/lib/generated/prisma";
 import { checkAndAllocateCredits } from "@/actions/credits";
 import { Badge } from "./ui/badge";
+import ChatbotModal from "./chatbot-modal";
 
 type UserResponse = User | { error: string };
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   // if(user?.role=='PATIENT'){
   //   checkAndAllocateCredits(user);
@@ -31,106 +33,131 @@ export default function Header() {
   }, []);
   
   return (
-    <div className="flex justify-end items-center p-4 gap-4 h-16">
-      {/* Action Buttons */}
-      <SignedIn>
-        {/* Admin Links */}
-        {user?.role === "ADMIN" && (
-          <Link href="/admin">
-            <Button
-              variant="outline"
-              className="hidden md:inline-flex items-center gap-2"
-            >
-              <ShieldCheck className="h-4 w-4" />
-              Admin Dashboard
-            </Button>
-            <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
-              <ShieldCheck className="h-4 w-4" />
-            </Button>
-          </Link>
-        )}
+    <>
+      <div className="flex justify-end items-center p-4 gap-4 h-16">
+        {/* Action Buttons */}
+        <SignedIn>
+          {/* Chatbot Button - Available for all authenticated users */}
+          <Button
+            variant="outline"
+            className="hidden md:inline-flex items-center gap-2"
+            onClick={() => setIsChatbotOpen(true)}
+          >
+            <MessageCircle className="h-4 w-4" />
+            Health Assistant
+          </Button>
+          <Button 
+            variant="ghost" 
+            className="md:hidden w-10 h-10 p-0"
+            onClick={() => setIsChatbotOpen(true)}
+          >
+            <MessageCircle className="h-4 w-4" />
+          </Button>
 
-        {/* Doctor Links */}
-        {user?.role === "DOCTOR" && (
-          <Link href="/doctor">
-            <Button
-              variant="outline"
-              className="hidden md:inline-flex items-center gap-2"
-            >
-              <Stethoscope className="h-4 w-4" />
-              Doctor Dashboard
-            </Button>
-            <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
-              <Stethoscope className="h-4 w-4" />
-            </Button>
-          </Link>
-        )}
-
-        {/* Patient Links */}
-        {user?.role === "PATIENT" && (
-          <Link href="/appointments">
-            <Button
-              variant="outline"
-              className="hidden md:inline-flex items-center gap-2"
-            >
-              <Calendar className="h-4 w-4" />
-              My Appointments
-            </Button>
-            <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
-              <Calendar className="h-4 w-4" />
-            </Button>
-          </Link>
-        )}
-
-        {/* Unassigned Role */}
-        {user?.role === "UNASSIGNED" && (
-          <Link href="/onboarding">
-            <Button
-              variant="outline"
-              className="hidden md:inline-flex items-center gap-2"
-            >
-              <UserIcon className="h-4 w-4" />
-              Complete Profile
-            </Button>
-            <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
-              <UserIcon className="h-4 w-4" />
-            </Button>
-          </Link>
-        )}
-      </SignedIn>
-
-      {(!user || user?.role !== "ADMIN") && (
-            <Link href={user?.role === "PATIENT" ? "/pricing" : "/doctor"}>
-              <Badge
+          {/* Admin Links */}
+          {user?.role === "ADMIN" && (
+            <Link href="/admin">
+              <Button
                 variant="outline"
-                className="h-9 bg-emerald-900/20 border-emerald-700/30 px-3 py-1 flex items-center gap-2"
+                className="hidden md:inline-flex items-center gap-2"
               >
-                <CreditCard className="h-3.5 w-3.5 text-emerald-400" />
-                <span className="text-emerald-400">
-                  {user && user.role !== "ADMIN" ? (
-                    <>
-                      {user.credits}{" "}
-                      <span className="hidden md:inline">
-                        {user?.role === "PATIENT"
-                          ? "Credits"
-                          : "Earned Credits"}
-                      </span>
-                    </>
-                  ) : (
-                    <>Pricing</>
-                  )}
-                </span>
-              </Badge>
+                <ShieldCheck className="h-4 w-4" />
+                Admin Dashboard
+              </Button>
+              <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
+                <ShieldCheck className="h-4 w-4" />
+              </Button>
             </Link>
           )}
 
-      <SignedOut>
-        <SignInButton />
-        <SignUpButton />
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-    </div>
+          {/* Doctor Links */}
+          {user?.role === "DOCTOR" && (
+            <Link href="/doctor">
+              <Button
+                variant="outline"
+                className="hidden md:inline-flex items-center gap-2"
+              >
+                <Stethoscope className="h-4 w-4" />
+                Doctor Dashboard
+              </Button>
+              <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
+                <Stethoscope className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
+
+          {/* Patient Links */}
+          {user?.role === "PATIENT" && (
+            <Link href="/appointments">
+              <Button
+                variant="outline"
+                className="hidden md:inline-flex items-center gap-2"
+              >
+                <Calendar className="h-4 w-4" />
+                My Appointments
+              </Button>
+              <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
+                <Calendar className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
+
+          {/* Unassigned Role */}
+          {user?.role === "UNASSIGNED" && (
+            <Link href="/onboarding">
+              <Button
+                variant="outline"
+                className="hidden md:inline-flex items-center gap-2"
+              >
+                <UserIcon className="h-4 w-4" />
+                Complete Profile
+              </Button>
+              <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
+                <UserIcon className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
+        </SignedIn>
+
+        {(!user || user?.role !== "ADMIN") && (
+              <Link href={user?.role === "PATIENT" ? "/pricing" : "/doctor"}>
+                <Badge
+                  variant="outline"
+                  className="h-9 bg-emerald-900/20 border-emerald-700/30 px-3 py-1 flex items-center gap-2"
+                >
+                  <CreditCard className="h-3.5 w-3.5 text-emerald-400" />
+                  <span className="text-emerald-400">
+                    {user && user.role !== "ADMIN" ? (
+                      <>
+                        {user.credits}{" "}
+                        <span className="hidden md:inline">
+                          {user?.role === "PATIENT"
+                            ? "Credits"
+                            : "Earned Credits"}
+                        </span>
+                      </>
+                    ) : (
+                      <>Pricing</>
+                    )}
+                  </span>
+                </Badge>
+              </Link>
+            )}
+
+        <SignedOut>
+          <SignInButton />
+          <SignUpButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+      </div>
+
+      {/* Chatbot Modal */}
+      <ChatbotModal 
+        isOpen={isChatbotOpen} 
+        onClose={() => setIsChatbotOpen(false)} 
+      />
+    </>
   )
 }
