@@ -1,11 +1,52 @@
+"use client"
+
+import { useState } from "react";
 import { User, Star, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Doctor } from "@/lib/doctor";
+import ChatModal from "./chat-modal";
+import { getOrCreateChatRoomByClerkIds } from "@/actions/message";
+import { useUser } from "@clerk/nextjs";
+// import { checkUser } from "@/lib/checkUser";
 
 export function DoctorCard({ doctor }: { doctor: Doctor }) {
+  // State for controlling the chat modal
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatRoomId, setChatRoomId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const { user } = useUser();
+
+  // Handle Message button click
+  const handleMessageClick = async () => {
+    if (!user?.id) {
+      alert("Please sign in to send messages");
+      return;
+    }
+
+    if (!doctor?.clerkUserId) {
+      alert("Invalid doctor information");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const chatRoom = await getOrCreateChatRoomByClerkIds(doctor.clerkUserId, user.id);
+      if (!chatRoom) {
+        throw new Error("Failed to create or find chat room");
+      }
+      setChatRoomId(chatRoom.id);
+      setIsChatOpen(true);
+    } catch (err: any) {
+      console.error("Chat error:", err);
+      alert(err?.message || "Failed to start chat. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Card className="border-emerald-900/20 hover:border-emerald-700/40 transition-all">
       <CardContent>
@@ -51,6 +92,26 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
                 View Profile & Book
               </Link>
             </Button>
+            {/* Message button to open chat modal */}
+            <Button
+              variant="outline"
+              className="w-full mt-2"
+              onClick={handleMessageClick}
+              type="button"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Message"}
+            </Button>
+            {/* Chat modal for messaging this doctor, only open when chatRoomId is available */}
+            {chatRoomId && (
+              <ChatModal
+                isOpen={isChatOpen}
+                onClose={() => setIsChatOpen(false)}
+                doctor={doctor}
+                patient={user}
+                chatRoomId={chatRoomId}
+              />
+            )}
           </div>
         </div>
       </CardContent>

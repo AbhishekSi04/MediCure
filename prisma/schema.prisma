@@ -33,6 +33,12 @@ model User {
   credentialUrl     String?   // Document URL
   description       String?   @db.Text
   verificationStatus VerificationStatus?  @default(PENDING)
+
+  // socket.io fields
+  doctorChatRooms  ChatRoom[] @relation("DoctorChatRooms")
+  patientChatRooms ChatRoom[] @relation("PatientChatRooms")
+  sentMessages     Message[]  @relation("Message_sender")
+
   
   // Relations
   patientAppointments Appointment[] @relation("PatientAppointments")
@@ -49,6 +55,42 @@ enum UserRole {
   DOCTOR
   ADMIN
 }
+
+// pateint and doctor communication
+
+model ChatRoom {
+  id          String    @id @default(uuid())
+  doctorId    String
+  patientId   String
+  doctor      User      @relation("DoctorChatRooms", fields: [doctorId], references: [id])
+  patient     User      @relation("PatientChatRooms", fields: [patientId], references: [id])
+  messages    Message[]                 // All messages in this chat room.
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([doctorId, patientId])    //Ensures only one chat room exists for each doctor-patient pair.
+}
+
+
+
+model Message {
+  id          String    @id @default(uuid())
+  chatRoomId  String
+  chatRoom    ChatRoom  @relation(fields: [chatRoomId], references: [id])
+  senderId    String
+  sender      User      @relation("Message_sender", fields: [senderId], references: [id])
+  messageType MessageType @default(TEXT)
+  content     String    // For text, or URL for image/file/voice
+  createdAt   DateTime  @default(now())
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  FILE
+}
+
+// For chatbot 
 
 model ChatMessage {
   id        String   @id @default(uuid())
@@ -97,8 +139,8 @@ model Appointment {
   patientDescription String? @db.Text
     
   // Video session fields
-  videoSessionId    String?  // Vonage Video API Session ID
-  videoSessionToken String?  // Optional: Can store tokens if needed
+  videoSessionId    String?  
+  videoSessionToken String?  
   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt

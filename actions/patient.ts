@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 /**
  * Get all appointments for the authenticated patient
  */
+
 export async function getPatientAppointments() {
   const { userId } = await auth();
 

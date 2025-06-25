@@ -18,7 +18,10 @@ export const checkUser = async () => {
                 const loggedInUser = await db.user.findUnique({
                     where: {
                         clerkUserId: user.id
-                    }
+                    },
+                    select: {
+                        id:true
+                    },
                 })
                 if(loggedInUser) {
                     return loggedInUser

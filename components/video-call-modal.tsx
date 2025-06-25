@@ -42,7 +42,7 @@ export function VideoCallModal({
       try {
         setIsLoading(true)
         // Connect to signaling server
-        const socket = io(process.env.NEXT_PUBLIC_SIGNALING_URL || "http://localhost:3001")
+        const socket = io(process.env.NEXT_PUBLIC_SIGNALING_SERVER_URL || "http://localhost:3001")
         socketRef.current = socket
 
         // Join the room for this appointment

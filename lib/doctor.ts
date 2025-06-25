@@ -1,5 +1,6 @@
 export interface Doctor {
     id: string;
+    clerkUserId:string;
     name: string | null;
     email: string;
     specialty: string | null;
