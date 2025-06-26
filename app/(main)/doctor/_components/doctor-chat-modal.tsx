@@ -45,7 +45,7 @@ export default function DoctorChatModal({ isOpen, onClose, doctor, patient, chat
       setIsLoadingHistory(true);
       try {
         const history = await getChatHistory(chatRoomId);
-        console.log("doctorid is:",doctor.id);
+        // console.log("doctorid is:",doctor.id);
         const doctorUUID = await convertClerkIdToUuuid(doctor.id);
         // doctor.id = doctorUUID;
         const formatted: Message[] = history.map((msg: any) => ({
@@ -152,14 +152,6 @@ export default function DoctorChatModal({ isOpen, onClose, doctor, patient, chat
                 </p>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="h-8 w-8 p-0"
-            >
-              <X className="h-4 w-4" />
-            </Button>
           </div>
         </DialogHeader>
         {/* Chat messages */}
