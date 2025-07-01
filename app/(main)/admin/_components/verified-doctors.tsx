@@ -25,6 +25,7 @@ import { updateDoctorStatus } from "@/actions/admin";
 import useFetch from "@/hooks/use-fetch";
 import { useEffect } from "react";
 import { BarLoader } from "react-spinners";
+import { toast } from "sonner";
 
 // Define the Doctor type
 type Doctor = {
@@ -72,6 +73,8 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
     formData.append("status", "REJECTED");
 
     await submitStatusUpdate(formData);
+    toast.success("Status Updated!");
+    setSelectedDoctor(null);
   };
 
   useEffect(() => {
@@ -82,9 +85,9 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
 
   return (
     <div>
-      <Card className="bg-muted/20 border-emerald-900/20">
+      <Card className="bg-muted/20 border-emerald-900/30">
         <CardHeader>
-          <CardTitle className="text-xl font-bold text-white">
+          <CardTitle className="text-xl font-bold dark:text-white text-slate-700">
             Verified Doctors
           </CardTitle>
           <CardDescription>
@@ -101,16 +104,16 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
               {doctors.map((doctor) => (
                 <Card
                   key={doctor.id}
-                  className="bg-background border-emerald-900/20 hover:border-emerald-700/30 transition-all"
+                  className="bg-background border-emerald-900/30 hover:border-emerald-700/30 transition-all"
                 >
                   <CardContent className="p-4">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted/20 rounded-full p-2">
-                          <User className="h-5 w-5 text-emerald-400" />
+                          <User className="h-5 w-5 text-blue-500" />
                         </div>
                         <div>
-                          <h3 className="font-medium text-white">
+                          <h3 className="font-medium dark:text-white text-slate-700">
                             {doctor.name || "Unnamed Doctor"}
                           </h3>
                           <p className="text-sm text-muted-foreground">
@@ -122,7 +125,7 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
                       <div className="flex items-center gap-2 self-end md:self-auto">
                         <Badge
                           variant="outline"
-                          className="bg-emerald-900/20 border-emerald-900/30 text-emerald-400"
+                          className="bg-emerald-900/20 border-emerald-900/30 text-blue-500"
                         >
                           Verified
                         </Badge>
@@ -149,7 +152,7 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
         <Dialog open={!!selectedDoctor} onOpenChange={handleCloseDialog}>
           <DialogContent className="max-w-3xl">
             <DialogHeader>
-              <DialogTitle className="text-xl font-bold text-white">
+              <DialogTitle className="text-xl font-bold dark:text-white text-slate-700">
                 Doctor Details
               </DialogTitle>
               <DialogDescription>
@@ -159,12 +162,12 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
 
             <div className="space-y-6 py-4">
               {/* Basic Info */}
-              <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <div className="space-y-1 flex-1">
                   <h4 className="text-sm font-medium text-muted-foreground">
                     Full Name
                   </h4>
-                  <p className="text-base font-medium text-white">
+                  <p className="text-base font-medium dark:text-white text-slate-600 break-words">
                     {selectedDoctor.name || "Unnamed Doctor"}
                   </p>
                 </div>
@@ -172,7 +175,7 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
                   <h4 className="text-sm font-medium text-muted-foreground">
                     Email
                   </h4>
-                  <p className="text-base font-medium text-white">
+                  <p className="text-base font-medium dark:text-white text-slate-600 break-words">
                     {selectedDoctor.email}
                   </p>
                 </div>
@@ -180,36 +183,36 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
                   <h4 className="text-sm font-medium text-muted-foreground">
                     Verification Date
                   </h4>
-                  <p className="text-base font-medium text-white">
+                  <p className="text-base font-medium dark:text-white text-slate-600">
                     {format(new Date(selectedDoctor.createdAt), "PPP")}
                   </p>
                 </div>
               </div>
 
-              <Separator className="bg-emerald-900/20" />
+              <Separator className="bg-blue-900/20 dark:bg-blue-400/10" />
 
               {/* Professional Details */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <Medal className="h-5 w-5 text-emerald-400" />
-                  <h3 className="text-white font-medium">
+                  <Medal className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+                  <h3 className="dark:text-white text-slate-700 font-medium">
                     Professional Information
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
                   <div className="space-y-1">
                     <h4 className="text-sm font-medium text-muted-foreground">
                       Specialty
                     </h4>
-                    <p className="text-white">{selectedDoctor.specialty || "No specialty"}</p>
+                    <p className="dark:text-white text-slate-700">{selectedDoctor.specialty || "No specialty"}</p>
                   </div>
 
                   <div className="space-y-1">
                     <h4 className="text-sm font-medium text-muted-foreground">
                       Years of Experience
                     </h4>
-                    <p className="text-white">
+                    <p className="dark:text-white text-slate-700">
                       {selectedDoctor.experience || 0} years
                     </p>
                   </div>
@@ -218,12 +221,12 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
                     <h4 className="text-sm font-medium text-muted-foreground">
                       Credentials
                     </h4>
-                    <div className="flex items-center">
+                    <div className="flex items-center flex-wrap gap-2">
                       <a
                         href={selectedDoctor.credentialUrl || "#"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-emerald-400 hover:text-emerald-300 flex items-center"
+                        className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-600 flex items-center"
                       >
                         View Credentials
                         <ExternalLink className="h-4 w-4 ml-1" />
@@ -233,13 +236,13 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
                 </div>
               </div>
 
-              <Separator className="bg-emerald-900/20" />
+              <Separator className="bg-blue-900/20 dark:bg-blue-400/10" />
 
               {/* Description */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-emerald-400" />
-                  <h3 className="text-white font-medium">
+                  <FileText className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+                  <h3 className="dark:text-white text-slate-700 font-medium">
                     Service Description
                   </h3>
                 </div>
@@ -251,7 +254,7 @@ export function VerifiedDoctors({ doctors }: VerifiedDoctorsProps) {
 
             {loading && <BarLoader width={"100%"} color="#36d7b7" />}
 
-            <DialogFooter>
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:justify-between mt-4">
               <Button
                 variant="destructive"
                 onClick={() => handleRejectDoctor(selectedDoctor.id)}

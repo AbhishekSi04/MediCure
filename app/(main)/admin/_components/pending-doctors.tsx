@@ -76,6 +76,7 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
     formData.append("status", status);
 
     await submitStatusUpdate(formData);
+    setSelectedDoctor(null);
     router.refresh();
   };
 
@@ -88,9 +89,9 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
 
   return (
     <div>
-      <Card className="bg-muted/20 border-emerald-900/20">
+      <Card className="bg-muted/30 border-emerald-900/20">
         <CardHeader>
-          <CardTitle className="text-xl font-bold text-white">
+          <CardTitle className="text-xl font-bold dark:text-white text-slate-700">
             Pending Doctor Verifications
           </CardTitle>
           <CardDescription>
@@ -113,10 +114,10 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted/20 rounded-full p-2">
-                          <User className="h-5 w-5 text-emerald-400" />
+                          <User className="h-5 w-5 text-blue-400" />
                         </div>
                         <div>
-                          <h3 className="font-medium text-white">
+                          <h3 className="font-medium dark:text-white text-black-900">
                             {doctor.name || "Unnamed Doctor"}
                           </h3>
                           <p className="text-sm text-muted-foreground">
@@ -128,7 +129,7 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
                       <div className="flex items-center gap-2 self-end md:self-auto">
                         <Badge
                           variant="outline"
-                          className="bg-amber-900/20 border-amber-900/30 text-amber-400"
+                          className="bg-amber-900/20 border-amber-900/30 text-amber-600"
                         >
                           Pending
                         </Badge>
@@ -155,7 +156,7 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
         <Dialog open={!!selectedDoctor} onOpenChange={handleCloseDialog}>
           <DialogContent className="max-w-3xl">
             <DialogHeader>
-              <DialogTitle className="text-xl font-bold text-white">
+              <DialogTitle className="text-xl font-bold dark:text-white text-slate-800">
                 Doctor Verification Details
               </DialogTitle>
               <DialogDescription>
@@ -166,12 +167,12 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
 
             <div className="space-y-6 py-4">
               {/* Basic Info */}
-              <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <div className="space-y-1 flex-1">
                   <h4 className="text-sm font-medium text-muted-foreground">
                     Full Name
                   </h4>
-                  <p className="text-base font-medium text-white">
+                  <p className="text-base font-medium dark:text-white text-slate-700 break-words">
                     {selectedDoctor.name || "Unnamed Doctor"}
                   </p>
                 </div>
@@ -179,7 +180,7 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
                   <h4 className="text-sm font-medium text-muted-foreground">
                     Email
                   </h4>
-                  <p className="text-base font-medium text-white">
+                  <p className="text-base font-medium dark:text-white text-slate-700 break-words">
                     {selectedDoctor.email}
                   </p>
                 </div>
@@ -187,36 +188,36 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
                   <h4 className="text-sm font-medium text-muted-foreground">
                     Application Date
                   </h4>
-                  <p className="text-base font-medium text-white">
+                  <p className="text-base font-medium dark:text-white text-slate-700">
                     {format(new Date(selectedDoctor.createdAt), "PPP")}
                   </p>
                 </div>
               </div>
 
-              <Separator className="bg-emerald-900/20" />
+              <Separator className="bg-blue-900/20 dark:bg-blue-400/10" />
 
               {/* Professional Details */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <Medal className="h-5 w-5 text-emerald-400" />
-                  <h3 className="text-white font-medium">
+                  <Medal className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+                  <h3 className="dark:text-white text-slate-700 font-medium">
                     Professional Information
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
                   <div className="space-y-1">
                     <h4 className="text-sm font-medium text-muted-foreground">
                       Specialty
                     </h4>
-                    <p className="text-white">{selectedDoctor.specialty || "No specialty"}</p>
+                    <p className="dark:text-white text-slate-700">{selectedDoctor.specialty || "No specialty"}</p>
                   </div>
 
                   <div className="space-y-1">
                     <h4 className="text-sm font-medium text-muted-foreground">
                       Years of Experience
                     </h4>
-                    <p className="text-white">
+                    <p className="dark:text-white text-slate-700">
                       {selectedDoctor.experience || 0} years
                     </p>
                   </div>
@@ -225,12 +226,12 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
                     <h4 className="text-sm font-medium text-muted-foreground">
                       Credentials
                     </h4>
-                    <div className="flex items-center">
+                    <div className="flex items-center flex-wrap gap-2">
                       <a
                         href={selectedDoctor.credentialUrl || "#"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-emerald-400 hover:text-emerald-300 flex items-center"
+                        className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-600 flex items-center"
                       >
                         View Credentials
                         <ExternalLink className="h-4 w-4 ml-1" />
@@ -240,13 +241,13 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
                 </div>
               </div>
 
-              <Separator className="bg-emerald-900/20" />
+              <Separator className="bg-blue-900/20 dark:bg-blue-400/10" />
 
               {/* Description */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-emerald-400" />
-                  <h3 className="text-white font-medium">
+                  <FileText className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+                  <h3 className="dark:text-white text-slate-700 font-medium">
                     Service Description
                   </h3>
                 </div>
@@ -256,9 +257,9 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
               </div>
             </div>
 
-            {loading && <BarLoader width={"100%"} color="#36d7b7" />}
+            {loading && <BarLoader width={"100%"} color="#60A5FA" />}
 
-            <DialogFooter className="flex sm:justify-between">
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:justify-between mt-4">
               <Button
                 variant="destructive"
                 onClick={() =>
@@ -275,7 +276,7 @@ export function PendingDoctors({ doctors }: PendingDoctorsProps) {
                   handleUpdateStatus(selectedDoctor.id, "VERIFIED")
                 }
                 disabled={loading}
-                className="bg-emerald-600 hover:bg-emerald-700"
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 <Check className="mr-2 h-4 w-4" />
                 Approve

@@ -35,24 +35,12 @@ import {
       icon: <CircleDot className="h-5 w-5" />,
     },
     {
-      name: "Endocrinology",
-      icon: <Timer className="h-5 w-5" />,
-    },
-    {
       name: "Gastroenterology",
       icon: <Thermometer className="h-5 w-5" />,
     },
     {
       name: "Neurology",
       icon: <Brain className="h-5 w-5" />,
-    },
-    {
-      name: "Obstetrics & Gynecology",
-      icon: <Flower2 className="h-5 w-5" />,
-    },
-    {
-      name: "Oncology",
-      icon: <Target className="h-5 w-5" />,
     },
     {
       name: "Ophthalmology",
@@ -69,14 +57,6 @@ import {
     {
       name: "Psychiatry",
       icon: <Brain className="h-5 w-5" />,
-    },
-    {
-      name: "Pulmonology",
-      icon: <Activity className="h-5 w-5" />,
-    },
-    {
-      name: "Radiology",
-      icon: <CircleDot className="h-5 w-5" />,
     },
     {
       name: "Urology",

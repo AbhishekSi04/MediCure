@@ -77,7 +77,7 @@ export default function AdminPage() {
   }, [pendingError, verifiedError,payoutError]);
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto ">
       {/* <Tabs
         defaultValue="pending"
         value={activeTab}
@@ -93,7 +93,7 @@ export default function AdminPage() {
             {(isInitialLoad || pendingLoading) ? (
               
               <div className="flex justify-center py-8">
-                <BarLoader width={"100%"} color="#36d7b7" />
+                <BarLoader width={"100%"} color="#60A5FA" />
               </div>
             ) : (
               <PendingDoctors doctors={pendingData?.doctors || []} />
@@ -103,7 +103,7 @@ export default function AdminPage() {
         <TabsContent value="verified" className="space-y-4">
             {isInitialLoad || verifiedLoading ? (
               <div className="flex justify-center py-8">
-                <BarLoader width={"100%"} color="#36d7b7" />
+                <BarLoader width={"100%"} color="##60A5FA" />
               </div>
             ) : (
               <VerifiedDoctors doctors={verifiedData?.doctors || []} />
@@ -113,7 +113,7 @@ export default function AdminPage() {
         <TabsContent  value="payouts" className="space-y-4">
           {isInitialLoad || payoutLoading ? (
             <div className="flex justify-center py-8">
-              <BarLoader width={"100%"} color="#36d7b7" />
+              <BarLoader width={"100%"} color="#60A5FA" />
             </div>
           ) : (
             <PendingPayouts payouts={payoutData?.payouts || []} />

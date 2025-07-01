@@ -19,9 +19,9 @@ export const checkUser = async () => {
                     where: {
                         clerkUserId: user.id
                     },
-                    select: {
-                        id:true
-                    },
+                    // select: {
+                    //     id:true
+                    // },
                 })
                 if(loggedInUser) {
                     return loggedInUser

@@ -4,6 +4,9 @@ import "./globals.css";
 import { ClerkProvider, SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Header from "@/components/header";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "@/components/theme-provider";
+import { dark} from '@clerk/themes'
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,17 +29,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    
-    <ClerkProvider>
-          <html lang="en">
-            <body
-              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
-              <Header />
-              <Toaster richColors/>
-              {children}
-            </body>
-          </html>
+    <ClerkProvider appearance={{
+      baseTheme: dark,
+    }}>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <ThemeProvider defaultTheme="system" storageKey="ui-theme">
+          <section className="border-b border-border ">
+            <Header/>
+          </section>
+            <Toaster richColors/>
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

@@ -1,10 +1,10 @@
 import { getCurrentUser } from "@/actions/onboarding";
 import { redirect } from "next/navigation";
 
-export const metadata = {
-  title: "Onboarding - MediMeet",
-  description: "Complete your profile to get started with MediMeet",
-};
+// export const metadata = {
+//   title: "Onboarding - MediMeet",
+//   description: "Complete your profile to get started with MediMeet",
+// };
 
 export default async function OnboardingLayout({ children }: any) {
   // Get complete user profile
@@ -30,7 +30,7 @@ export default async function OnboardingLayout({ children }: any) {
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-white mb-2">
+          <h1 className="text-4xl font-bold pb-2 mb-2 text-blue-500">
             Welcome to MediMeet
           </h1>
           <p className="text-muted-foreground text-lg">

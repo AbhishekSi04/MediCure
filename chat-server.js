@@ -31,6 +31,7 @@ io.on("connection", (socket) => {
   });
 });
 
+
 const PORT = process.env.CHAT_PORT || 3002; // Use different port from signaling server
 httpServer.listen(PORT, () => {
   console.log(`Chat Socket.IO server running on port ${PORT}`);

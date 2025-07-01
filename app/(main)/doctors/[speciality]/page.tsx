@@ -1,11 +1,10 @@
 import { redirect } from "next/navigation";
 import { getDoctorsBySpecialty } from "@/actions/doctors-listing";
 import { DoctorCard } from "../_components/doctor-card";
-// import { PageHeader } from "@/components/page-header";
 
 export default async function DoctorSpecialtyPage({ params }: { params: { speciality: string } }) {
   const { speciality } = await params;
-  
+
 
   // Redirect to main doctors page if no specialty is provided
   if (!speciality) {
@@ -20,12 +19,9 @@ export default async function DoctorSpecialtyPage({ params }: { params: { specia
   }
 
   return (
-    <div className="space-y-5">
-      {/* <PageHeader
-        title={specialty.split("%20").join(" ")}
-        backLink="/doctors"
-        backLabel="All Specialties"
-      /> */}
+    <div className="space-y-5 px-2 sm:px-4 py-4 max-w-7xl mx-auto">
+      
+      <h1 className="text-2xl px-3 py-4 text-blue-500 text-center font-bold">All Doctors of {speciality.split("%20").join(" ")}</h1>
 
       {doctors && doctors.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
