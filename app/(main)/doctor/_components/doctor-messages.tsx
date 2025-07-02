@@ -25,8 +25,8 @@ export default function DoctorMessages() {
     };
 
     return (
-        <div>
-            <h1 className="text-xl font-bold mb-4">Patient Messages</h1>
+        <div className=" pb-4">
+            <h1 className="text-xl font-bold mb-4 ">All Patient Messages</h1>
             {chatRooms.length === 0 ? (
                 <div className="text-gray-500">No messages from patients yet.</div>
             ) : (
@@ -39,7 +39,7 @@ export default function DoctorMessages() {
                                 key={room.id}
                                 className="flex items-center justify-between border p-4 rounded"
                             >
-                                <div>
+                                <div className=" bg-muted/30">
                                     <div className="font-semibold">{patient?.name || "Unknown Patient"}</div>
                                     <div className="text-sm text-gray-600">
                                         {lastMessage
@@ -48,7 +48,7 @@ export default function DoctorMessages() {
                                     </div>
                                 </div>
                                 <button
-                                    className="bg-emerald-500 text-white px-4 py-2 rounded hover:bg-emerald-600"
+                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                                     onClick={() => handleReply(room)}
                                 >
                                     Reply

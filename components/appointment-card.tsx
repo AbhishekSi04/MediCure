@@ -52,6 +52,7 @@ export default function AppointmentCard({ appointment, userRole, refetchAppointm
   const handleComplete = async () => {
     try {
       await completeAppointment(appointment.id)
+      await deleteVideoSession(appointment.id)
       toast.success("Appointment marked as completed")
       refetchAppointments?.()
     } catch (error) {
@@ -73,7 +74,7 @@ export default function AppointmentCard({ appointment, userRole, refetchAppointm
     try {
       setIsGeneratingSession(true)
       await generateVideoSession(appointment.id)
-      toast.success("Video session generated successfully")
+      toast.success("Video session generated")
       refetchAppointments?.()
     } catch (error) {
       toast.error("Failed to generate video session")
@@ -82,163 +83,128 @@ export default function AppointmentCard({ appointment, userRole, refetchAppointm
     }
   }
 
-  const handleDeleteVideoSession = async () => {
-    try {
-      await deleteVideoSession(appointment.id)
-      toast.success("Video session deleted successfully")
-      refetchAppointments?.()
-    } catch (error) {
-      toast.error("Failed to delete video session")
-    }
-  }
+  // const handleDeleteVideoSession = async () => {
+  //   try {
+  //     await deleteVideoSession(appointment.id)
+  //     toast.success("Video session deleted")
+  //     refetchAppointments?.()
+  //   } catch (error) {
+  //     toast.error("Failed to delete video session")
+  //   }
+  // }
 
   return (
-    <Card className="p-4 hover:shadow-lg transition-shadow">
-      <div className="flex flex-col space-y-3">
-        <div className="flex justify-between items-start">
-          <div className="flex items-center space-x-2">
-            <User className="h-5 w-5 text-emerald-400" />
-            <span className="font-medium text-white">
-              {userRole === "PATIENT" ? appointment.doctor?.name || "Unknown Doctor" : "Patient"}
-            </span>
+    <Card className="p-6 rounded-2xl shadow-md bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-800 text-zinc-900 dark:text-white">
+      <div className="flex justify-between items-start">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-lg font-semibold">
+            <User className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            {userRole === "PATIENT" ? appointment.doctor?.name || "Unknown Doctor" : "Patient"}
           </div>
-          <Badge className={`${getStatusColor(appointment.status)} text-white`}>
-            {appointment.status}
-          </Badge>
+          {appointment.doctor?.specialty && (
+            <p className="text-sm text-blue-700 dark:text-blue-200">Specialty: {appointment.doctor.specialty}</p>
+          )}
         </div>
+        <Badge className={`${getStatusColor(appointment.status)} text-white`}>{appointment.status}</Badge>
+      </div>
 
-        <div className="flex items-center space-x-2 text-muted-foreground">
-          <Calendar className="h-4 w-4" />
-          <span>{format(new Date(appointment.startTime), "MMMM d, yyyy")}</span>
+      <div className="mt-4 space-y-2 text-sm text-zinc-700 dark:text-slate-300">
+        <div className="flex items-center gap-2">
+          <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+          {format(new Date(appointment.startTime), "MMMM d, yyyy")}
         </div>
-
-        <div className="flex items-center space-x-2 text-muted-foreground">
-          <Clock className="h-4 w-4" />
-          <span>
-            {format(new Date(appointment.startTime), "h:mm a")} -{" "}
-            {format(new Date(appointment.endTime), "h:mm a")}
-          </span>
+        <div className="flex items-center gap-2">
+          <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+          {format(new Date(appointment.startTime), "h:mm a")} - {format(new Date(appointment.endTime), "h:mm a")}
         </div>
-
-        {appointment.videoSessionId && (
-          <div className="flex items-center space-x-2 text-emerald-400">
-            <Video className="h-4 w-4" />
-            <span>Video session available</span>
-          </div>
-        )}
-
         {appointment.notes && (
-          <div className="text-sm text-muted-foreground">
-            <p className="font-medium">Notes:</p>
+          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg px-3 py-2">
+            <p className="font-medium text-zinc-900 dark:text-white">Notes:</p>
             <p>{appointment.notes}</p>
           </div>
         )}
-
         {appointment.patientDescription && (
-          <div className="text-sm text-muted-foreground">
-            <p className="font-medium">Patient Description:</p>
+          <div className="bg-zinc-50 dark:bg-zinc-800 rounded-lg px-3 py-2">
+            <p className="font-medium text-zinc-900 dark:text-white">Patient Description:</p>
             <p>{appointment.patientDescription}</p>
           </div>
         )}
-
-        {appointment.status === "SCHEDULED" && (
-          <div className="flex gap-2 mt-2">
-            <Button 
-              onClick={() => setIsDetailsOpen(true)}
-              variant="outline" 
-              className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
-            >
-              <Eye className="h-4 w-4 mr-2" />
-              View Details
-            </Button>
-            {userRole === "DOCTOR" && (
-              <Button 
-                onClick={handleComplete}
-                variant="outline" 
-                className="flex-1 bg-green-500 hover:bg-green-600 text-white"
-              >
-                Complete
-              </Button>
-            )}
-            <Button 
-              onClick={handleCancel}
-              variant="outline" 
-              className="flex-1 bg-red-500 hover:bg-red-600 text-white"
-            >
-              Cancel
-            </Button>
-          </div>
-        )}
-
-        {appointment.status === "SCHEDULED" && userRole === "DOCTOR" && !appointment.videoSessionId && (
-          <Button
-            onClick={handleGenerateVideoSession}
-            variant="outline"
-            className="w-full bg-emerald-500 hover:bg-emerald-600 text-white"
-            disabled={isGeneratingSession}
-          >
-            <Video className="h-4 w-4 mr-2" />
-            {isGeneratingSession ? "Generating..." : "Generate Video Session"}
-          </Button>
-        )}
-
-        {appointment.videoSessionId && appointment.status === "SCHEDULED" && (
-          <div className="flex gap-2">
-            <Button
-              onClick={() => setIsVideoCallOpen(true)}
-              variant="outline"
-              className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white"
-            >
-              <Video className="h-4 w-4 mr-2" />
-              Start Video Call
-            </Button>
-            {userRole === "DOCTOR" && (
-              <Button
-                onClick={handleDeleteVideoSession}
-                variant="outline"
-                className="bg-red-500 hover:bg-red-600 text-white"
-              >
-                Delete Session
-              </Button>
-            )}
+        {appointment.videoSessionId && (
+          <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium">
+            <Video className="h-4 w-4" />
+            Video session available
           </div>
         )}
       </div>
 
+      {/* Action Buttons - Responsive row */}
+      <div className="mt-6 flex flex-col sm:flex-row gap-2">
+        {/* {appointment.status === "SCHEDULED" && (
+          // <Button onClick={() => setIsDetailsOpen(true)} variant="outline" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white">
+          //   <Eye className="h-4 w-4 mr-2" /> View Details
+          // </Button>
+        )} */}
+        {appointment.status === "SCHEDULED" && userRole === "DOCTOR" && (
+          <Button onClick={handleComplete} className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white">
+            Complete
+          </Button>
+        )}
+        {appointment.status === "SCHEDULED" && (
+          <Button onClick={handleCancel} className="flex-1 bg-red-600 hover:bg-red-700 text-white">
+            Cancel
+          </Button>
+        )}
+        {appointment.status === "SCHEDULED" && userRole === "DOCTOR" && !appointment.videoSessionId && (
+          <Button onClick={handleGenerateVideoSession} className="flex-1 bg-blue-500 hover:bg-blue-600 text-white" disabled={isGeneratingSession}>
+            <Video className="h-4 w-4 mr-2" />
+            {isGeneratingSession ? "Generating..." : "Generate Video Session"}
+          </Button>
+        )}
+        {appointment.videoSessionId && appointment.status === "SCHEDULED" && (
+          <Button onClick={() => setIsVideoCallOpen(true)} className="flex-1 bg-blue-500 hover:bg-blue-600 text-white">
+            <Video className="h-4 w-4 mr-2" />
+            Start Video Call
+          </Button>
+        )}
+        {/* {appointment.videoSessionId && appointment.status === "SCHEDULED" && userRole === "DOCTOR" && (
+          <Button onClick={handleDeleteVideoSession} className="flex-1 bg-red-600 hover:bg-red-700 text-white">
+            Delete Session
+          </Button>
+        )} */}
+      </div>
+
+      {/* Details Dialog */}
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="bg-slate-900 text-white">
           <DialogHeader>
             <DialogTitle>Appointment Details</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <User className="h-5 w-5 text-emerald-400" />
-              <span className="font-medium">
-                {userRole === "PATIENT" ? appointment.doctor?.name || "Unknown Doctor" : "Patient"}
-              </span>
+          <div className="space-y-3 text-sm text-slate-300">
+            <div className="flex items-center gap-2">
+              <User className="h-4 w-4 text-blue-400" />
+              {userRole === "PATIENT" ? appointment.doctor?.name : "Patient"}
             </div>
             {appointment.doctor?.specialty && (
-              <div className="text-sm text-muted-foreground">
-                <p className="font-medium">Specialty:</p>
+              <>
+                <p className="text-white font-medium">Specialty:</p>
                 <p>{appointment.doctor.specialty}</p>
-              </div>
+              </>
             )}
             {appointment.notes && (
-              <div className="text-sm text-muted-foreground">
-                <p className="font-medium">Notes:</p>
+              <>
+                <p className="text-white font-medium">Notes:</p>
                 <p>{appointment.notes}</p>
-              </div>
+              </>
             )}
             {appointment.patientDescription && (
-              <div className="text-sm text-muted-foreground">
-                <p className="font-medium">Patient Description:</p>
+              <>
+                <p className="text-white font-medium">Patient Description:</p>
                 <p>{appointment.patientDescription}</p>
-              </div>
+              </>
             )}
           </div>
         </DialogContent>
       </Dialog>
-
       <VideoCallModal
         isOpen={isVideoCallOpen}
         onClose={() => setIsVideoCallOpen(false)}

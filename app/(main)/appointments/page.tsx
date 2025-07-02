@@ -18,25 +18,21 @@ export default async function PatientAppointmentsPage() {
   if(appointments?.length==undefined) return;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* <PageHeader
-        icon={<Calendar />}
-        title="My Appointments"
-        backLink="/doctors"
-        backLabel="Find Doctors"
-      /> */}
+    <div className="container max-w-7xl mx-auto px-4 py-8">
+      
+      <h1 className="text-2xl text-center sm:text-3xl md:text-4xl font-bold text-blue-500 dark:text-blue-400 mb-3 sm:mb-4 px-4">My Appointments</h1>
 
-      <Card className="border-emerald-900/20">
+      <Card className="border-blue-900/20 dark:border-blue-400/30 bg-white dark:bg-zinc-900 shadow-md transition-colors">
         <CardHeader>
-          <CardTitle className="text-xl font-bold text-white flex items-center">
-            <Calendar className="h-5 w-5 mr-2 text-emerald-400" />
+          <CardTitle className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center text-center">
+            <Calendar className="h-5 w-5 mr-2 text-blue-500 dark:text-blue-400" />
             Your Scheduled Appointments
           </CardTitle>
         </CardHeader>
         <CardContent>
           {error ? (
             <div className="text-center py-8">
-              <p className="text-red-400">Error: {error}</p>
+              <p className="text-red-400 dark:text-red-300">Error: {error}</p>
             </div>
           ) : appointments?.length > 0 ? (
             <div className="space-y-4">
@@ -50,11 +46,11 @@ export default async function PatientAppointmentsPage() {
             </div>
           ) : (
             <div className="text-center py-8">
-              <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
-              <h3 className="text-xl font-medium text-white mb-2">
+              <Calendar className="h-12 w-12 mx-auto text-zinc-400 dark:text-zinc-600 mb-3" />
+              <h3 className="text-xl font-medium text-zinc-700 dark:text-zinc-100 mb-2">
                 No appointments scheduled
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-zinc-500 dark:text-zinc-400">
                 You don&apos;t have any appointments scheduled yet. Browse our
                 doctors and book your first consultation.
               </p>

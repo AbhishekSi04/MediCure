@@ -95,13 +95,13 @@ export function AvailabilitySettings({ slots }: AvailabilitySettingsProps) {
   };
 
   return (
-    <Card className="border-emerald-900/20">
+    <Card className="border-blue-200 dark:border-blue-900/40 bg-white dark:bg-slate-900">
       <CardHeader>
-        <CardTitle className="text-xl font-bold text-white flex items-center">
-          <Clock className="h-5 w-5 mr-2 text-emerald-400" />
+        <CardTitle className="text-xl font-bold text-zinc-900 dark:text-white flex items-center">
+          <Clock className="h-5 w-5 mr-2 text-blue-500 dark:text-blue-400" />
           Availability Settings
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-zinc-600 dark:text-zinc-300">
           Set your daily availability for patient appointments
         </CardDescription>
       </CardHeader>
@@ -110,7 +110,7 @@ export function AvailabilitySettings({ slots }: AvailabilitySettingsProps) {
         {!showForm ? (
           <>
             <div className="mb-6">
-              <h3 className="text-lg font-medium text-white mb-3">
+              <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-3">
                 Current Availability
               </h3>
 
@@ -124,13 +124,13 @@ export function AvailabilitySettings({ slots }: AvailabilitySettingsProps) {
                   {slots.map((slot) => (
                     <div
                       key={slot.id}
-                      className="flex items-center p-3 rounded-md bg-muted/20 border border-emerald-900/20"
+                      className="flex items-center p-3 rounded-md bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-900/40"
                     >
-                      <div className="bg-emerald-900/20 p-2 rounded-full mr-3">
-                        <Clock className="h-4 w-4 text-emerald-400" />
+                      <div className="bg-blue-100 dark:bg-blue-900/20 p-2 rounded-full mr-3">
+                        <Clock className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                       </div>
                       <div>
-                        <p className="text-white font-medium">
+                        <p className="text-zinc-900 dark:text-white font-medium">
                           {formatTimeString(slot.startTime)} -{" "}
                           {formatTimeString(slot.endTime)}
                         </p>
@@ -146,7 +146,7 @@ export function AvailabilitySettings({ slots }: AvailabilitySettingsProps) {
 
             <Button
               onClick={() => setShowForm(true)}
-              className="w-full bg-emerald-600 hover:bg-emerald-700"
+              className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
             >
               <Plus className="h-4 w-4 mr-2" />
               Set Availability Time
@@ -155,22 +155,22 @@ export function AvailabilitySettings({ slots }: AvailabilitySettingsProps) {
         ) : (
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 border border-emerald-900/20 rounded-md p-4"
+            className="space-y-4 border border-blue-200 dark:border-blue-900/40 rounded-md p-4 bg-blue-50 dark:bg-blue-900/10"
           >
-            <h3 className="text-lg font-medium text-white mb-2">
+            <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-2">
               Set Daily Availability
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="startTime">Start Time</Label>
+                <Label htmlFor="startTime" className="text-zinc-700 dark:text-zinc-200">Start Time</Label>
                 <Input
                   id="startTime"
                   type="time"
                   {...register("startTime", {
                     required: "Start time is required",
                   })}
-                  className="bg-background border-emerald-900/20"
+                  className="bg-background border-blue-200 dark:border-blue-900/40 text-zinc-900 dark:text-white"
                 />
                 {errors.startTime && (
                   <p className="text-sm font-medium text-red-500">
@@ -180,12 +180,12 @@ export function AvailabilitySettings({ slots }: AvailabilitySettingsProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="endTime">End Time</Label>
+                <Label htmlFor="endTime" className="text-zinc-700 dark:text-zinc-200">End Time</Label>
                 <Input
                   id="endTime"
                   type="time"
                   {...register("endTime", { required: "End time is required" })}
-                  className="bg-background border-emerald-900/20"
+                  className="bg-background border-blue-200 dark:border-blue-900/40 text-zinc-900 dark:text-white"
                 />
                 {errors.endTime && (
                   <p className="text-sm font-medium text-red-500">
@@ -195,20 +195,20 @@ export function AvailabilitySettings({ slots }: AvailabilitySettingsProps) {
               </div>
             </div>
 
-            <div className="flex justify-end space-x-3 pt-2">
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setShowForm(false)}
                 disabled={loading}
-                className="border-emerald-900/30"
+                className="border-blue-200 dark:border-blue-900/40 text-zinc-700 dark:text-zinc-200"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={loading}
-                className="bg-emerald-600 hover:bg-emerald-700"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
               >
                 {loading ? (
                   <>
@@ -223,16 +223,14 @@ export function AvailabilitySettings({ slots }: AvailabilitySettingsProps) {
           </form>
         )}
 
-        <div className="mt-6 p-4 bg-muted/10 border border-emerald-900/10 rounded-md">
-          <h4 className="font-medium text-white mb-2 flex items-center">
-            <AlertCircle className="h-4 w-4 mr-2 text-emerald-400" />
+        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/20 rounded-md">
+          <h4 className="font-medium text-zinc-900 dark:text-white mb-2 flex items-center">
+            <AlertCircle className="h-4 w-4 mr-2 text-blue-500 dark:text-blue-400" />
             How Availability Works
           </h4>
           <p className="text-muted-foreground text-sm">
             Setting your daily availability allows patients to book appointments
-            during those hours. The same availability applies to all days. You
-            can update your availability at any time, but existing booked
-            appointments will not be affected.
+            during those hours. The same availability applies to all days.
           </p>
         </div>
       </CardContent>

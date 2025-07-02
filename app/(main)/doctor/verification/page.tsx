@@ -23,12 +23,12 @@ export default async function VerificationPage() {
   const isRejected = user?.verificationStatus === "REJECTED";
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-2xl mx-auto">
-        <Card className="border-blue-200 dark:border-slate-800 shadow-lg">
-          <CardHeader className="text-center">
+    <div className="container mx-auto px-2 sm:px-4 py-8 sm:py-12 min-h-[80vh] flex items-center justify-center">
+      <div className="w-full max-w-xl sm:max-w-2xl mx-auto">
+        <Card className="border-blue-200 dark:border-slate-800 shadow-lg bg-white dark:bg-slate-900">
+          <CardHeader className="text-center px-4 sm:px-6">
             <div
-              className={`mx-auto p-4 ${
+              className={`mx-auto p-4 sm:p-5 ${
                 isRejected 
                   ? "bg-red-100 dark:bg-red-900/20" 
                   : "bg-blue-100 dark:bg-blue-900/20"
@@ -40,22 +40,22 @@ export default async function VerificationPage() {
                 <ClipboardCheck className="h-10 w-10 text-blue-500 dark:text-blue-400" />
               )}
             </div>
-            <CardTitle className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+            <CardTitle className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">
               {isRejected
                 ? "Verification Declined"
                 : "Verification in Progress"}
             </CardTitle>
-            <CardDescription className="text-lg text-slate-600 dark:text-slate-300">
+            <CardDescription className="text-base sm:text-lg text-slate-600 dark:text-slate-300">
               {isRejected
                 ? "Unfortunately, your application needs revision"
                 : "Thank you for submitting your information"}
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-center">
+          <CardContent className="text-center px-4 sm:px-6">
             {isRejected ? (
-              <div className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-xl p-6 mb-8 flex items-start">
-                <AlertCircle className="h-6 w-6 text-red-500 dark:text-red-400 mr-4 mt-1 flex-shrink-0" />
-                <div className="text-slate-700 dark:text-slate-300 text-left">
+              <div className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-xl p-4 sm:p-6 mb-8 flex flex-col sm:flex-row items-start text-left gap-4">
+                <AlertCircle className="h-6 w-6 text-red-500 dark:text-red-400 flex-shrink-0" />
+                <div className="text-slate-700 dark:text-slate-300">
                   <p className="mb-4 text-base leading-relaxed">
                     Our administrative team has reviewed your application and
                     found that it doesn&apos;t meet our current requirements.
@@ -74,9 +74,9 @@ export default async function VerificationPage() {
                 </div>
               </div>
             ) : (
-              <div className="bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-slate-800 rounded-xl p-6 mb-8 flex items-start">
-                <AlertCircle className="h-6 w-6 text-blue-500 dark:text-blue-400 mr-4 mt-1 flex-shrink-0" />
-                <div className="text-slate-700 dark:text-slate-300 text-left">
+              <div className="bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-slate-800 rounded-xl p-4 sm:p-6 mb-8 flex flex-col sm:flex-row items-start text-left gap-4">
+                <AlertCircle className="h-6 w-6 text-blue-500 dark:text-blue-400 flex-shrink-0" />
+                <div className="text-slate-700 dark:text-slate-300">
                   <p className="text-base leading-relaxed">
                     Your profile is currently under review by our administrative
                     team. This process typically takes <strong>1-2 business days</strong>.
@@ -104,19 +104,19 @@ export default async function VerificationPage() {
                 : "While you wait, you can familiarize yourself with our platform or reach out to our support team if you have any questions."}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-full">
               {isRejected ? (
                 <>
                   <Button
                     asChild
                     variant="outline"
-                    className="border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
+                    className="w-full sm:w-auto border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                   >
                     <Link href="/">Return to Home</Link>
                   </Button>
                   <Button
                     asChild
-                    className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+                    className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
                   >
                     <Link href="/doctor/update-profile">Update Profile</Link>
                   </Button>
@@ -126,7 +126,7 @@ export default async function VerificationPage() {
                   <Button
                     asChild
                     variant="outline"
-                    className="border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
+                    className="w-full sm:w-auto border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                   >
                     <Link href="/">Return to Home</Link>
                   </Button>

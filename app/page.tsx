@@ -164,24 +164,25 @@ export default function Home() {
                 <span className="text-blue-600 dark:text-blue-400">Simple</span>
               </h1>
               <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-300 mb-8 sm:mb-10 lg:mb-12 leading-relaxed px-4 sm:px-0">
-                Connect with board-certified doctors instantly. Get expert medical advice, 
-                prescriptions, and care from the comfort of your home.
+              Talk to certified doctors anytime, anywhere.
+              Get expert advice, prescriptions, and care—right from home.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center ">
                 <Link href='/onboarding'>
                   <Button size="lg" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold w-full sm:w-auto">
                     Get Started
                     <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                   </Button>
                 </Link>
-                <Button size="lg" variant="outline" className="border-2 border-slate-300 hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold w-full sm:w-auto">
-                  <Play className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  Watch Demo
-                </Button>
+                <Link href='/contact'>
+                  <Button size="lg" className="bg-slate-600 hover:bg-slate-700 dark:bg-slate-500 dark:hover:bg-slate-600 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold w-full sm:w-auto">
+                    Contact Us
+                  </Button>
+                </Link>
               </div>
               
               {/* Trust indicators */}
-              <div className="hidden md:block lg:mt-12 md:flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-6 lg:space-x-8">
+              <div className="hidden md:mt-10 md:flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2">
                   <div className="flex -space-x-2">
                     <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 dark:bg-blue-900/50 rounded-full border-2 border-white dark:border-slate-800 flex items-center justify-center">

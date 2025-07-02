@@ -231,84 +231,96 @@ export function VideoCallModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent 
+        className="sm:max-w-[800px] p-2 sm:p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border-blue-100 dark:border-blue-900/30 h-[80vh] sm:h-auto max-h-[100vh] flex flex-col"
+      >
         <DialogHeader>
-          <DialogTitle>Video Call</DialogTitle>
+          <DialogTitle className="text-center w-full text-lg sm:text-2xl font-bold text-blue-700 dark:text-blue-400 tracking-tight mb-2">Video Call</DialogTitle>
         </DialogHeader>
-        
-        <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
-          {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="text-white">Connecting...</div>
-            </div>
-          )}
-          <video
-            ref={remoteVideoRef}
-            autoPlay
-            playsInline
-            className="w-full h-full object-cover"
-          />
-          <video
-            ref={localVideoRef}
-            autoPlay
-            playsInline
-            muted
-            className="absolute bottom-4 right-4 w-48 h-36 object-cover rounded-lg border-2 border-white"
-          />
+        <div className="flex-1 flex flex-col h-full w-full min-h-0">
+          <div 
+            className="relative w-full flex-1 rounded-xl overflow-hidden flex items-center justify-center shadow-lg bg-black h-[60%] sm:h-auto sm:aspect-video min-h-[120px]"
+          >
+            {isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 z-10">
+                <div className="text-white text-lg font-semibold animate-pulse">Connecting...</div>
+              </div>
+            )}
+            <video
+              ref={remoteVideoRef}
+              autoPlay
+              playsInline
+              className="w-full h-full object-cover bg-black"
+            />
+            <video
+              ref={localVideoRef}
+              autoPlay
+              playsInline
+              muted
+              className="absolute bottom-2 right-2 w-24 h-20 sm:w-40 sm:h-32 object-cover rounded-lg border-2 border-blue-400 shadow-md bg-zinc-900/80"
+              style={{ zIndex: 20 }}
+            />
+          </div>
+          {/* Controls */}
+          <div className="w-full flex flex-col items-center justify-center flex-shrink-0 mt-2">
+            {!isCallAccepted && userRole === "PATIENT" ? (
+              <div className="flex flex-col sm:flex-row justify-center gap-3 w-full">
+                <Button
+                  onClick={handleAcceptCall}
+                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold flex items-center justify-center shadow-md rounded-full px-6 py-3 text-base"
+                >
+                  <Phone className="h-5 w-5 mr-2" />
+                  Accept Call
+                </Button>
+                <Button
+                  onClick={handleRejectCall}
+                  variant="outline"
+                  className="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white font-semibold flex items-center justify-center shadow-md rounded-full px-6 py-3 text-base border-none"
+                >
+                  <PhoneOff className="h-5 w-5 mr-2" />
+                  Reject
+                </Button>
+              </div>
+            ) : (
+              <div className="flex justify-center gap-3 w-full mt-2">
+                <Button
+                  onClick={toggleMute}
+                  variant="outline"
+                  className={`rounded-full w-12 h-12 flex items-center justify-center shadow-md border-none ${isMuted ? "bg-red-500 hover:bg-red-600" : "bg-zinc-200 dark:bg-zinc-800 hover:bg-blue-100 dark:hover:bg-blue-900"}`}
+                >
+                  {isMuted ? (
+                    <MicOff className="h-6 w-6 text-white" />
+                  ) : (
+                    <Mic className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                  )}
+                </Button>
+                <Button
+                  onClick={toggleVideo}
+                  variant="outline"
+                  className={`rounded-full w-12 h-12 flex items-center justify-center shadow-md border-none ${isVideoOff ? "bg-red-500 hover:bg-red-600" : "bg-zinc-200 dark:bg-zinc-800 hover:bg-blue-100 dark:hover:bg-blue-900"}`}
+                >
+                  {isVideoOff ? (
+                    <VideoOff className="h-6 w-6 text-white" />
+                  ) : (
+                    <Video className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                  )}
+                </Button>
+                <Button
+                  onClick={endCall}
+                  variant="outline"
+                  className="rounded-full w-12 h-12 flex items-center justify-center shadow-md border-none dark:bg-red-500 bg-red-500 hover:bg-red-600 text-white"
+                >
+                  <PhoneOff className="h-6 w-6" />
+                </Button>
+              </div>
+            )}
+          </div>
+          <div className="w-full flex-shrink-0">
+            {/* <div className="w-full text-center text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm break-words px-2 pb-2">
+              {isCallActive ? "You are in a secure video call. Please ensure your camera and microphone are enabled." : "Waiting for the other participant to join..."}
+            </div> */}
+          </div>
         </div>
-
-        {!isCallAccepted && userRole === "PATIENT" ? (
-          <div className="flex justify-center gap-4 mt-4">
-            <Button
-              onClick={handleAcceptCall}
-              className="bg-green-500 hover:bg-green-600 text-white"
-            >
-              <Phone className="h-4 w-4 mr-2" />
-              Accept Call
-            </Button>
-            <Button
-              onClick={handleRejectCall}
-              variant="outline"
-              className="bg-red-500 hover:bg-red-600 text-white"
-            >
-              <PhoneOff className="h-4 w-4 mr-2" />
-              Reject
-            </Button>
-          </div>
-        ) : (
-          <div className="flex justify-center gap-4 mt-4">
-            <Button
-              onClick={toggleMute}
-              variant="outline"
-              className={isMuted ? "bg-red-500 hover:bg-red-600" : "bg-gray-500 hover:bg-gray-600"}
-            >
-              {isMuted ? (
-                <MicOff className="h-4 w-4 text-white" />
-              ) : (
-                <Mic className="h-4 w-4 text-white" />
-              )}
-            </Button>
-            <Button
-              onClick={toggleVideo}
-              variant="outline"
-              className={isVideoOff ? "bg-red-500 hover:bg-red-600" : "bg-gray-500 hover:bg-gray-600"}
-            >
-              {isVideoOff ? (
-                <VideoOff className="h-4 w-4 text-white" />
-              ) : (
-                <Video className="h-4 w-4 text-white" />
-              )}
-            </Button>
-            <Button
-              onClick={endCall}
-              variant="outline"
-              className="bg-red-500 hover:bg-red-600 text-white"
-            >
-              <PhoneOff className="h-4 w-4 mr-2" />
-              End Call
-            </Button>
-          </div>
-        )}
       </DialogContent>
     </Dialog>
   )
