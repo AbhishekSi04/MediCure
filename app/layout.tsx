@@ -1,6 +1,8 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "locomotive-scroll/dist/locomotive-scroll.css";
 import { ClerkProvider, SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Header from "@/components/header";
 import { Toaster } from "sonner";
@@ -28,6 +30,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <ClerkProvider appearance={{
       baseTheme: dark,
@@ -37,11 +40,16 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ThemeProvider defaultTheme="system" storageKey="ui-theme">
-          <section className="border-b border-border ">
-            <Header/>
-          </section>
-            <Toaster richColors/>
-            {children}
+            <div
+              data-scroll-container
+              style={{ minHeight: "100vh" }}
+            >
+              <section className="border-b border-border ">
+                <Header/>
+              </section>
+              <Toaster richColors/>
+              {children}
+            </div>
           </ThemeProvider>
         </body>
       </html>

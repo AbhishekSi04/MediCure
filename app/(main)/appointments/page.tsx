@@ -5,6 +5,8 @@ import { Calendar } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/actions/onboarding";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function PatientAppointmentsPage() {
   const user = await getCurrentUser();
@@ -54,6 +56,10 @@ export default async function PatientAppointmentsPage() {
                 You don&apos;t have any appointments scheduled yet. Browse our
                 doctors and book your first consultation.
               </p>
+              <Button className=" mt-5 p-3  text-white bg-blue-500 hover:bg-blue-600">
+                <Link href='/doctors'> Book Appointment
+                </Link>
+              </Button>
             </div>
           )}
         </CardContent>

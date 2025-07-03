@@ -179,7 +179,7 @@ export default function OnboardingPage() {
   if (step === "doctor-form") {
     return (
       <Card className="border-blue-900/20">
-        <CardContent className="pt-6">
+        <CardContent className="pt-5">
           <div className="mb-6">
             <CardTitle className="text-2xl font-bold text-black/80 dark:text-white mb-2">
               Complete Your Doctor Profile

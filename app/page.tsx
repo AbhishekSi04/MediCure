@@ -167,7 +167,7 @@ export default function Home() {
               Talk to certified doctors anytime, anywhere.
               Get expert advice, prescriptions, and care—right from home.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center ">
+              <div className="flex flex-row gap-4 sm:gap-6 justify-center md:justify-start ">
                 <Link href='/onboarding'>
                   <Button size="lg" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold w-full sm:w-auto">
                     Get Started

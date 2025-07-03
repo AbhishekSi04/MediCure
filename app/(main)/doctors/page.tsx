@@ -5,7 +5,7 @@ import { SPECIALTIES } from "@/lib/specialities";
 export default async function DoctorsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex flex-col items-center justify-center mb-8 sm:mb-12 py-8 sm:py-12 text-center">
+      <div className="flex flex-col items-center justify-center mb-4 sm:mb-8 py-4 sm:py-8 text-center">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-500 mb-3 sm:mb-4 px-4">
           Find Your Doctor
         </h1>

@@ -13,7 +13,7 @@ export async function setUserRole(formData: any) {
   if (!userId) {
     throw new Error("Unauthorized");
   }
-
+  console.log(userId);
   // Find user in our database
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
