@@ -148,7 +148,7 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
 
 
         {/* Main chat area (scrollable) */}
-        <div className="flex-1 overflow-y-auto p-4 bg-white dark:bg-slate-900">
+        <div className="flex-1 overflow-y-auto p-4 bg-white dark:bg-slate-900 hide-scrollbar-desktop">
           {/* If no messages, show welcome and quick questions */}
           {messages.length === 0 ? (
             <div className="text-center py-2">

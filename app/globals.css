@@ -120,3 +120,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Hide horizontal scrollbar for navigation tabs on desktop */
+@media (min-width: 768px) {
+  .hide-scrollbar-desktop {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  .hide-scrollbar-desktop::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Webkit */
+  }
+}
