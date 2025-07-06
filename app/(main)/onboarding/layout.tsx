@@ -31,7 +31,7 @@ export default async function OnboardingLayout({ children }: any) {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold pb-2 mb-2 text-blue-500">
-            Welcome to MediMeet
+            Welcome to MediCure
           </h1>
           <p className="text-muted-foreground text-lg">
             Tell us how you want to use the platform

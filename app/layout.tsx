@@ -39,7 +39,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <ThemeProvider defaultTheme="system" storageKey="ui-theme">
+          <ThemeProvider defaultTheme="dark" storageKey="ui-theme">
             <div
               data-scroll-container
               style={{ minHeight: "100vh" }}

@@ -13,7 +13,7 @@ export default async function PricingPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-200/30 dark:bg-blue-900/20 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-[300px] h-[200px] bg-blue-400/10 dark:bg-blue-800/20 rounded-full blur-2xl" />
       </div>
-      <div className="container relative z-10 mx-auto px-4 py-12 flex flex-col items-center">
+      <div className="container relative z-0 mx-auto px-4 py-12 flex flex-col items-center">
         {/* Header Section */}
         <div className="max-w-full mx-auto mb-12 text-center">
           <Badge

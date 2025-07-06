@@ -17,9 +17,6 @@ type UserResponse = User | { error: string };
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
 
-  // if(user?.role=='PATIENT'){
-  //   checkAndAllocateCredits(user);
-  // }
   
   useEffect(() => {
     const fetchUser = async () => {
@@ -27,7 +24,7 @@ export default function Header() {
       if (!('error' in response)) {
         setUser(response);
       }
-      console.log(response);
+      console.log(response); 
     }
     fetchUser();
   }, []);
@@ -40,7 +37,6 @@ export default function Header() {
             <img className="w-16 h-16 md:w-20 md:h-20 rounded-lg flex items-center justify-center"
                             src={Logo.src}
                             alt="Doctor with Laptop"
-                            // className="w-full h-full object-cover"
                     />
             <span className="text-lg md:text-2xl font-bold text-blue-600 dark:text-blue-500">MediCure</span>
           </Link>
@@ -120,10 +116,10 @@ export default function Header() {
               </Button>
             </Link>
           )}
-        </SignedIn>
+        
 
-        {(!user || user?.role !== "ADMIN") && (
-              <Link href={user?.role === "PATIENT" ? "/pricing" : "/doctor"}>
+          {(!user || user?.role !== "ADMIN" )  && (
+              <Link href={(user?.role === "DOCTOR" ) ? "/doctor" : "/pricing"}>
                 <Badge
                   variant="outline"
                   className="h-7 md:h-9 bg-emerald-900/20 border-emerald-700/30 px-2 md:px-3 py-1 flex items-center gap-1 md:gap-2 text-xs md:text-sm"
@@ -145,7 +141,9 @@ export default function Header() {
                   </span>
                 </Badge>
               </Link>
-            )}
+          )}
+
+        </SignedIn>
 
         <SignedOut>
           <div className="bg-blue-600 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-2 md:px-5 py-1 text-sm md:text-base font-semibold w-full sm:w-auto border rounded-md">

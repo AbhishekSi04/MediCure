@@ -33,15 +33,15 @@ export async function checkAndAllocateCredits(user:any) {
     
          if(hasBasic) {
             currentPlan = "free_user";
-            creditsToAllocate = 2;
+            creditsToAllocate = 4;
          }
          else if(hasStandard) {
             currentPlan = "standard";
-            creditsToAllocate = 10;
+            creditsToAllocate = 20;
          }
          else if(hasPremium) {
             currentPlan = "premium";
-            creditsToAllocate = 24;
+            creditsToAllocate = 100;
          }
     
          // if user not have any plans
@@ -88,4 +88,29 @@ export async function checkAndAllocateCredits(user:any) {
           return null;
     }
 
+}
+
+export async function getCurrentSubscriptionPlan() {
+  try {
+    const { has } = await auth();
+    
+    const hasBasic = has({ plan: "free_user" });
+    const hasStandard = has({ plan: "standard" });
+    const hasPremium = has({ plan: "premium" });
+    
+    let currentPlan = "free_user";
+    
+    if (hasBasic) {
+      currentPlan = "free_user";
+    } else if (hasStandard) {
+      currentPlan = "standard";
+    } else if (hasPremium) {
+      currentPlan = "premium";
+    }
+    
+    return { plan: currentPlan };
+  } catch (error: any) {
+    console.error("Failed to get subscription plan:", error.message);
+    return { plan: "free_user" };
+  }
 }

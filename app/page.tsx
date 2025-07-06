@@ -2,7 +2,7 @@
 
 import { PricingTable, SignedIn, useUser } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
-import { checkAndAllocateCredits } from "@/actions/credits";
+import { checkAndAllocateCredits, getCurrentSubscriptionPlan } from "@/actions/credits";
 import { checkUser } from "@/lib/checkUser";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,36 +30,44 @@ import Link from "next/link";
 
 export default function Home() {
   const { user: clerkUser } = useUser();
-  const lastPlanRef = useRef<string | null>(null);
-  const isFirstLoad = useRef(true);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   useEffect(() => {
     const handleSubscriptionChange = async () => {
       if (clerkUser) {
-        // Get current subscription plan from Clerk
-        const subscription = clerkUser.publicMetadata.subscription as string | undefined;
-        const currentPlan = subscription || "free_user";
+        console.log("handleSubscriptionChange call hua");
+        
+        // Get current subscription plan using server action
+        const subscriptionResult = await getCurrentSubscriptionPlan();
+        const currentPlan = subscriptionResult.plan;
+        
+        // Get last plan from localStorage
+        const lastPlan = localStorage.getItem("lastPlan");
+        console.log("Last plan:", lastPlan, "Current plan:", currentPlan);
 
-        // Skip the first load check
-        if (isFirstLoad.current) {
-          isFirstLoad.current = false;
-          lastPlanRef.current = currentPlan;
-          return;
-        }
+        if (lastPlan === null) {
+          // First run, just set the plan, don't allocate credits
+          console.log("🟡 First run, setting lastPlan to:", currentPlan);
+          localStorage.setItem("lastPlan", currentPlan);
+        } else if (currentPlan !== lastPlan) {
+          console.log("✅ Subscription plan changed from", lastPlan, "to", currentPlan);
+          localStorage.setItem("lastPlan", currentPlan);
 
-        // Only proceed if the plan has changed
-        if (currentPlan !== lastPlanRef.current) {
-          console.log("Subscription plan changed from", lastPlanRef.current, "to", currentPlan);
-          lastPlanRef.current = currentPlan;
-          
           const dbUser = await checkUser();
           if (!('error' in dbUser) && (dbUser as any).role === 'PATIENT') {
+            console.log("🔄 Calling checkAndAllocateCredits for user:", dbUser.id);
             await checkAndAllocateCredits(dbUser);
+          } else {
+            console.log("❌ Not calling checkAndAllocateCredits - user error or not a patient");
           }
+        } else {
+          console.log("⏭️ No plan change detected");
         }
       }
     };
+
+    // Call immediately when component mounts
+    handleSubscriptionChange();
 
     // Set up an interval to check for subscription changes
     const interval = setInterval(handleSubscriptionChange, 10000);
