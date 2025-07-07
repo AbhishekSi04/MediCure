@@ -49,10 +49,10 @@ export default function DoctorChatModal({ isOpen, onClose, doctor, patient, chat
         const doctorUUID = await convertClerkIdToUuuid(doctor.id);
         // doctor.id = doctorUUID;
         const formatted: Message[] = history.map((msg: any) => ({
-          role: msg.senderId === doctorUUID? 'doctor' : 'patient',
+          role: msg.senderId === doctorUUID ? 'doctor' : 'patient',
           content: msg.content,
           timestamp: new Date(msg.createdAt).toISOString(),
-          senderName: (msg.senderId === doctorUUID ? 'You' : patient?.name),
+          senderName: (msg.senderId === doctorUUID ? 'You' : (msg.sender?.name|| patient?.name || 'Patient')),
           senderId: msg.senderId,
         }));
         // console.log(formatted);
@@ -157,7 +157,7 @@ export default function DoctorChatModal({ isOpen, onClose, doctor, patient, chat
           </div>
         </DialogHeader>
         {/* Chat messages */}
-        <div className="flex-1 overflow-y-auto p-4 bg-white dark:bg-slate-900">
+        <div className="flex-1 overflow-y-auto p-4 bg-white dark:bg-slate-900 hide-scrollbar-desktop">
           {isLoadingHistory ? (
             <div className="text-center text-gray-400 mt-10">
               <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2" />
@@ -189,12 +189,12 @@ export default function DoctorChatModal({ isOpen, onClose, doctor, patient, chat
                           <Card className={`${message.role === 'doctor' ? 'bg-blue-500 dark:bg-blue-600 text-white' : 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700'}`}>
                             <CardContent className="p-3">
                               <div className="flex items-start gap-2">
-                                {message.role === 'patient' && (
+                                {message.role !== 'doctor' && (
                                   <User className="h-4 w-4 text-gray-600 mt-0.5 flex-shrink-0" />
                                 )}
                                 <div className="flex-1">
-                                  <div className={`font-bold text-xs mb-1 ${message.role==='doctor' ? 'text-white/80' : 'text-blue-500 dark:text-blue-400'}`}>
-                                    {message.role === 'doctor' ? 'YOU' : (message.senderName || 'PATIENT')}
+                                  <div className={`font-bold text-xs mb-1 ${message.role ==='doctor' ? 'text-white/80' : 'text-blue-500 dark:text-blue-400'}`}>
+                                    {message.role === 'doctor' ? 'YOU' : (patient?.name || 'PATIENT')}
                                   </div>
                                   <p className="text-sm whitespace-pre-wrap">
                                     {message.content}

@@ -153,7 +153,7 @@ export default function ChatModal({ isOpen, onClose, doctor, patient, chatRoomId
           </div>
         </DialogHeader>
         {/* Chat messages */}
-        <div className="flex-1 overflow-y-auto p-4 bg-white dark:bg-slate-900">
+        <div className="flex-1 overflow-y-auto p-4 bg-white dark:bg-slate-900 hide-scrollbar-desktop">
           {isLoadingHistory ? (
             <div className="text-center text-zinc-400 mt-10">
               <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2" />
