@@ -52,7 +52,7 @@ export default function DoctorChatModal({ isOpen, onClose, doctor, patient, chat
           role: msg.senderId === doctorUUID ? 'doctor' : 'patient',
           content: msg.content,
           timestamp: new Date(msg.createdAt).toISOString(),
-          senderName: (msg.senderId === doctorUUID ? 'You' : (msg.sender?.name|| patient?.name || 'Patient')),
+          senderName: (msg.senderId === doctorUUID ? 'You' : (msg.sender?.name|| patient?.name || 'Patient' )),
           senderId: msg.senderId,
         }));
         // console.log(formatted);

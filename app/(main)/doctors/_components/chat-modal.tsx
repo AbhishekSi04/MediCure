@@ -186,7 +186,7 @@ export default function ChatModal({ isOpen, onClose, doctor, patient, chatRoomId
                             <CardContent className="p-3">
                               <div className="flex items-start gap-2">
                                 {message.role !=='user' && (
-                                  <Bot className="h-4 w-4 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                                  <Bot className="h-4 w-4  text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0" />
                                 )}
                                 <div className="flex-1">
                                   <div className={`font-bold text-xs mb-1 ${message.role==='user' ? 'text-white/80' : 'text-blue-500 dark:text-blue-400'}`}> 
