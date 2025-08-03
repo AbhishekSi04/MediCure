@@ -1,6 +1,6 @@
-# MediCare-2 🏥
+# MediCare 🏥
 
-MediCare-2 is a comprehensive healthcare platform designed to seamlessly connect doctors and patients through advanced appointment scheduling, real-time consultations, secure payments, and AI-powered health assistance. Built with modern web technologies, it provides a robust foundation for healthcare accessibility and communication.
+MediCare is a comprehensive healthcare platform designed to seamlessly connect doctors and patients through advanced appointment scheduling, real-time consultations, secure payments, and AI-powered health assistance. Built with modern web technologies, it provides a robust foundation for healthcare accessibility and communication.
 
 ## Table of Contents
 
@@ -107,7 +107,7 @@ Create a `.env.local` file in the root directory with the following variables:
 
 ```env
 # Database
-DATABASE_URL="postgresql://username:password@localhost:5432/medicare2"
+DATABASE_URL="postgresql://username:password@localhost:5432/medicare"
 
 # Clerk Authentication
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="your_clerk_publishable_key"
@@ -137,7 +137,7 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd MediCare-2/my-app
+   cd MediCare/my-app
    ```
 
 2. **Install dependencies**
@@ -158,10 +158,10 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
    
    # In separate terminals:
    # Chat server
-   npm run chat
+   node chat-server.js
    
    # Signaling server for video calls
-   npm run signaling
+   node signaling-server.js
    ```
 
 5. **Open your browser**
