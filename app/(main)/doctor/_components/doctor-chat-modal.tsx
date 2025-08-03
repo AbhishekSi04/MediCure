@@ -5,10 +5,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../../../co
 import { Button } from '../../../../components/ui/button';
 import { Input } from '../../../../components/ui/input';
 import { Card, CardContent } from '../../../../components/ui/card';
-import { User, Bot, Send, X, Loader2 } from 'lucide-react';
+import { User, Send,  Loader2 } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
 import { sendMessage, getChatHistory, convertClerkIdToUuuid } from '@/actions/message';
-import { checkUser } from '@/lib/checkUser';
+// import { checkUser } from '@/lib/checkUser';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_CHAT_SERVER_URL || "http://localhost:3002"; // Use environment variable for production
 

@@ -1,18 +1,18 @@
 'use client'
 
 import { checkUser } from "@/lib/checkUser";
-import { SignInButton, SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton} from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { ShieldCheck, Stethoscope, Calendar, User as UserIcon, CreditCard, MessageCircle } from "lucide-react";
+import { ShieldCheck, Stethoscope, Calendar, User as UserIcon, CreditCard } from "lucide-react";
 import { User } from "@/lib/generated/prisma";
-import { checkAndAllocateCredits } from "@/actions/credits";
+// import { checkAndAllocateCredits } from "@/actions/credits";
 import { Badge } from "./ui/badge";
 import Logo from '@/assets/Logo.png'
 import { ThemeToggle, ThemeToggleMobile } from "./theme-toggle";
 
-type UserResponse = User | { error: string };
+// type UserResponse = User | { error: string };
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);

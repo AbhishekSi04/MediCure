@@ -5,22 +5,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card, CardContent } from './ui/card';
-import { Badge } from './ui/badge';
+// import { Badge } from './ui/badge';
 import { 
-  MessageCircle, 
   Send, 
-  X, 
   Bot, 
   User, 
   Loader2,
   AlertCircle,
   Stethoscope,
-  History
 } from 'lucide-react';
 import { sendChatMessage, ChatMessage } from '@/actions/chatbot';
 import { toast } from 'sonner';
-import { getChatHistory } from '@/actions/chatbot';
-import { useUser } from '@clerk/nextjs';
+// import { getChatHistory } from '@/actions/chatbot';
+// import { useUser } from '@clerk/nextjs';
 
 interface ChatbotModalProps {
   isOpen: boolean;
@@ -32,11 +29,11 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [history, setHistory] = useState<ChatMessage[] | null>(null);
+  const [history] = useState<ChatMessage[] | null>(null);
   const [showHistory, setShowHistory] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { user } = useUser();
+  // const { user } = useUser();
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -159,7 +156,7 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
                 Welcome to Health Assistant
               </h3>
               <p className="text-gray-600 dark:text-slate-300 mb-6 max-w-sm mx-auto">
-                I'm here to help with general health questions. Remember, I'm not a substitute for professional medical advice.
+                I am here to help with general health questions. Remember, I am not a substitute for professional medical advice.
               </p>
               {/* Quick Questions */}
               <div className="space-y-2">

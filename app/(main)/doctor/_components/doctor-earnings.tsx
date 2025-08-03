@@ -32,7 +32,7 @@ function PayoutForm({ availableCredits, onSuccess }: { availableCredits: number;
     try {
       const result = await requestPayout(formData);
       onSuccess();
-      return { success: true, message: "Payout requested successfully!" };
+      return { success: true, message: "Payout requested successfully!", result };
     } catch (err: any) {
       setClientError(err.message);
       return { error: err.message };

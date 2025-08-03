@@ -25,7 +25,7 @@ import { updateDoctorStatus } from "@/actions/admin";
 import useFetch from "@/hooks/use-fetch";
 import { useEffect } from "react";
 import { BarLoader } from "react-spinners";
-import { redirect, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 
 // Define the Doctor type
 type Doctor = {

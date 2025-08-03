@@ -1,9 +1,9 @@
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft, CreditCard, Shield, Check } from "lucide-react";
+// import { redirect } from "next/navigation";
+// import Link from "next/link";
+import {  Shield } from "lucide-react";
 import { PricingTable } from "@clerk/nextjs";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+// import { Card, CardContent } from "@/components/ui/card";
 
 export default async function PricingPage() {
   return (
@@ -50,7 +50,7 @@ export default async function PricingPage() {
         <div className="max-w-3xl mx-auto mt-16 text-center bg-blue-50 dark:bg-blue-900/10 rounded-2xl shadow-lg p-8 border border-blue-100 dark:border-blue-900/20">
           <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-300 mb-2 flex items-center justify-center gap-2">
             <Shield className="h-6 w-6 text-blue-400 dark:text-blue-500" />
-            Questions? We're Here to Help
+            Questions? We are Here to Help
           </h2>
           <p className="text-zinc-600 dark:text-zinc-300 mb-4">
             Contact our support team at <a href="mailto:abhisheksingh159084@gmail.com" className="underline text-blue-600 dark:text-blue-400">support@medimeet.com</a>

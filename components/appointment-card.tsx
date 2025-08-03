@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, User, Video, Eye } from "lucide-react"
+import { Calendar, Clock, User, Video } from "lucide-react"
 import { format } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { completeAppointment, cancelAppointment } from "@/actions/appointments"
@@ -55,8 +55,8 @@ export default function AppointmentCard({ appointment, userRole, refetchAppointm
       await deleteVideoSession(appointment.id)
       toast.success("Appointment marked as completed")
       refetchAppointments?.()
-    } catch (error) {
-      toast.error("Failed to complete appointment")
+    } catch (error:any) {
+      toast.error("Failed to complete appointment",error.message)
     }
   }
 
@@ -65,8 +65,8 @@ export default function AppointmentCard({ appointment, userRole, refetchAppointm
       await cancelAppointment(appointment.id)
       toast.success("Appointment cancelled")
       refetchAppointments?.()
-    } catch (error) {
-      toast.error("Failed to cancel appointment")
+    } catch (error:any) {
+      toast.error("Failed to cancel appointment",error.message)
     }
   }
 
@@ -76,8 +76,8 @@ export default function AppointmentCard({ appointment, userRole, refetchAppointm
       await generateVideoSession(appointment.id)
       toast.success("Video session generated")
       refetchAppointments?.()
-    } catch (error) {
-      toast.error("Failed to generate video session")
+    } catch (error:any) {
+      toast.error("Failed to generate video session ",error.message)
     } finally {
       setIsGeneratingSession(false)
     }

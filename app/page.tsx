@@ -1,7 +1,7 @@
 'use client'
 
 import { PricingTable, SignedIn, useUser } from "@clerk/nextjs";
-import { useEffect, useRef, useState } from "react";
+import { useEffect,  useState } from "react";
 import { checkAndAllocateCredits, getCurrentSubscriptionPlan } from "@/actions/credits";
 import { checkUser } from "@/lib/checkUser";
 import { Button } from "@/components/ui/button";
@@ -9,20 +9,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { 
   Heart, 
-  Stethoscope, 
   Clock, 
   Shield, 
   Users, 
   Star, 
   ArrowRight,
-  CheckCircle,
   Video,
   MessageCircle,
   Calendar,
-  Zap,
-  Play
 } from "lucide-react";
-import Header from "@/components/header";
+// import Header from "@/components/header";
 import HeroImage from '@/assets/Hero Image.webp'
 import Logo from "@/assets/Logo.png"
 import ChatbotModal from "@/components/chatbot-modal";
@@ -257,7 +253,7 @@ export default function Home() {
               Why Choose MediCare?
             </h2>
             <p className="text-xl text-gray-600 dark:text-slate-300 max-w-2xl mx-auto">
-              We're revolutionizing healthcare delivery with technology that puts you first
+              We are revolutionizing healthcare delivery with technology that puts you first
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -347,7 +343,7 @@ export default function Home() {
                     ))}
                   </div>
                   <p className="text-gray-700 dark:text-slate-300 leading-relaxed italic">
-                    "{testimonial.content}"
+                    {testimonial.content}
                   </p>
                 </CardContent>
               </Card>

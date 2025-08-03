@@ -60,7 +60,7 @@ export function AvailabilitySettings({ slots }: AvailabilitySettingsProps) {
 
     const formData = new FormData();
 
-    const today = new Date().toISOString().split("T")[0];
+    // const today = new Date().toISOString().split("T")[0];
 
     // Create date objects
     const startDate = createLocalDateFromTime(data.startTime);

@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send, CheckCircle, XCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Send,  XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { sendContactEmail } from "@/actions/contact";
@@ -9,18 +9,18 @@ import { toast } from "sonner";
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState<string | null>(null);
+  // const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    setSuccess(null);
+    // setSuccess(null);
     setError(null);
     try {
       const res = await sendContactEmail(form);
       if (res && res.success) {
-        setSuccess("Your message has been sent! We'll get back to you soon.");
+        // setSuccess("Your message has been sent! We'll get back to you soon.");
         toast.success("Your message has been sent! We'll get back to you soon.")
         setForm({ name: "", email: "", message: "" });
       } else {

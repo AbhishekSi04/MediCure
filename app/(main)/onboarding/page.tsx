@@ -29,11 +29,11 @@ import { useEffect } from "react";
 import z from "zod";
 
 // Define response type for the server action
-type OnboardingResponse = {
-  success: boolean;
-  redirect: string;
-  message?: string;
-};
+// type OnboardingResponse = {
+//   success: boolean;
+//   redirect: string;
+//   message?: string;
+// };
 
 const doctorFormSchema = z.object({
   specialty: z.string().min(1, "Specialty is required"),

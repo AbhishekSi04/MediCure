@@ -1,7 +1,7 @@
 import { verifyAdmin } from "@/actions/admin";
 import { redirect } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShieldCheck, AlertCircle, Users, CreditCard } from "lucide-react";
+import {  AlertCircle, Users, CreditCard } from "lucide-react";
 // import { PageHeader } from "@/components/page-header";
 
 export const metadata = {
